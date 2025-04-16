@@ -5,7 +5,8 @@ const stockData = [
         marketCap: 2800000000000,
         peRatio: 28.5,
         dividendYield: 0.5,
-        price: 175.25
+        price: 175.25,
+        sector: 'Technology'
     },
     {
         symbol: 'MSFT',
@@ -13,7 +14,8 @@ const stockData = [
         marketCap: 2400000000000,
         peRatio: 32.1,
         dividendYield: 0.72,
-        price: 325.80
+        price: 325.80,
+        sector: 'Technology'
     },
     {
         symbol: 'JNJ',
@@ -21,7 +23,8 @@ const stockData = [
         marketCap: 450000000000,
         peRatio: 15.8,
         dividendYield: 2.63,
-        price: 170.15
+        price: 170.15,
+        sector: 'Healthcare'
     },
     {
         symbol: 'KO',
@@ -29,7 +32,8 @@ const stockData = [
         marketCap: 260000000000,
         peRatio: 26.7,
         dividendYield: 3.12,
-        price: 60.45
+        price: 60.45,
+        sector: 'Consumer Staples'
     },
     {
         symbol: 'PG',
@@ -37,7 +41,35 @@ const stockData = [
         marketCap: 350000000000,
         peRatio: 24.3,
         dividendYield: 2.41,
-        price: 145.90
+        price: 145.90,
+        sector: 'Consumer Staples'
+    },
+    {
+        symbol: 'NVDA',
+        name: 'NVIDIA Corporation',
+        marketCap: 1800000000000,
+        peRatio: 65.2,
+        dividendYield: 0.14,
+        price: 720.35,
+        sector: 'Technology'
+    },
+    {
+        symbol: 'JPM',
+        name: 'JPMorgan Chase & Co.',
+        marketCap: 480000000000,
+        peRatio: 12.8,
+        dividendYield: 2.16,
+        price: 165.50,
+        sector: 'Financial Services'
+    },
+    {
+        symbol: 'V',
+        name: 'Visa Inc.',
+        marketCap: 520000000000,
+        peRatio: 33.4,
+        dividendYield: 0.78,
+        price: 240.15,
+        sector: 'Financial Services'
     }
 ];
 
@@ -56,14 +88,35 @@ function screenStocks() {
     const marketCapFilter = parseInt(document.getElementById('marketCap').value) || 0;
     const peRatioFilter = parseFloat(document.getElementById('peRatio').value) || Infinity;
     const dividendYieldFilter = parseFloat(document.getElementById('dividendYield').value) || 0;
+    const sectorFilter = document.getElementById('sector').value;
 
     const filteredStocks = stockData.filter(stock => {
-        return stock.marketCap >= marketCapFilter &&
-               stock.peRatio <= peRatioFilter &&
-               stock.dividendYield >= dividendYieldFilter;
+        const meetsMarketCap = stock.marketCap >= marketCapFilter;
+        const meetsPeRatio = stock.peRatio <= peRatioFilter;
+        const meetsDividend = stock.dividendYield >= dividendYieldFilter;
+        const meetsSector = !sectorFilter || stock.sector === sectorFilter;
+
+        return meetsMarketCap && meetsPeRatio && meetsDividend && meetsSector;
     });
 
     displayResults(filteredStocks);
+    updateResultsCount(filteredStocks.length, stockData.length);
+}
+
+function updateResultsCount(filtered, total) {
+    const countElement = document.getElementById('resultsCount');
+    if (countElement) {
+        countElement.textContent = `Showing ${filtered} of ${total} stocks`;
+    }
+}
+
+function clearFilters() {
+    document.getElementById('marketCap').value = '0';
+    document.getElementById('peRatio').value = '';
+    document.getElementById('dividendYield').value = '';
+    document.getElementById('sector').value = '';
+    displayResults(stockData);
+    updateResultsCount(stockData.length, stockData.length);
 }
 
 function displayResults(stocks) {
@@ -103,5 +156,7 @@ function displayResults(stocks) {
 }
 
 document.getElementById('screenButton').addEventListener('click', screenStocks);
+document.getElementById('clearButton').addEventListener('click', clearFilters);
 
 displayResults(stockData);
+updateResultsCount(stockData.length, stockData.length);
