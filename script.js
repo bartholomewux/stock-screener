@@ -119,15 +119,39 @@ function clearFilters() {
     updateResultsCount(stockData.length, stockData.length);
 }
 
+function sortStocks(stocks) {
+    const sortBy = document.getElementById('sortBy').value;
+    const sortOrder = document.getElementById('sortOrder').value;
+
+    const sortedStocks = [...stocks].sort((a, b) => {
+        let valueA = a[sortBy];
+        let valueB = b[sortBy];
+
+        if (typeof valueA === 'string') {
+            valueA = valueA.toLowerCase();
+            valueB = valueB.toLowerCase();
+        }
+
+        if (sortOrder === 'asc') {
+            return valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
+        } else {
+            return valueA > valueB ? -1 : valueA < valueB ? 1 : 0;
+        }
+    });
+
+    return sortedStocks;
+}
+
 function displayResults(stocks) {
     const resultsContainer = document.getElementById('stockResults');
+    const sortedStocks = sortStocks(stocks);
 
-    if (stocks.length === 0) {
+    if (sortedStocks.length === 0) {
         resultsContainer.innerHTML = '<p>No stocks match your criteria. Try adjusting your filters.</p>';
         return;
     }
 
-    const stocksHTML = stocks.map(stock => `
+    const stocksHTML = sortedStocks.map(stock => `
         <div class="stock-card">
             <div class="stock-symbol">${stock.symbol}</div>
             <div class="stock-name">${stock.name}</div>
@@ -148,6 +172,10 @@ function displayResults(stocks) {
                     <div class="metric-label">Dividend Yield</div>
                     <div class="metric-value">${stock.dividendYield}%</div>
                 </div>
+                <div class="metric">
+                    <div class="metric-label">Sector</div>
+                    <div class="metric-value">${stock.sector}</div>
+                </div>
             </div>
         </div>
     `).join('');
@@ -157,6 +185,16 @@ function displayResults(stocks) {
 
 document.getElementById('screenButton').addEventListener('click', screenStocks);
 document.getElementById('clearButton').addEventListener('click', clearFilters);
+document.getElementById('sortBy').addEventListener('change', () => {
+    if (document.getElementById('stockResults').children.length > 0) {
+        screenStocks();
+    }
+});
+document.getElementById('sortOrder').addEventListener('change', () => {
+    if (document.getElementById('stockResults').children.length > 0) {
+        screenStocks();
+    }
+});
 
 displayResults(stockData);
 updateResultsCount(stockData.length, stockData.length);

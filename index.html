@@ -55,7 +55,23 @@
         <div class="results">
             <div class="results-header">
                 <h2>Results</h2>
-                <span id="resultsCount"></span>
+                <div class="results-controls">
+                    <span id="resultsCount"></span>
+                    <div class="sort-controls">
+                        <label for="sortBy">Sort by:</label>
+                        <select id="sortBy">
+                            <option value="symbol">Symbol</option>
+                            <option value="marketCap">Market Cap</option>
+                            <option value="peRatio">P/E Ratio</option>
+                            <option value="dividendYield">Dividend Yield</option>
+                            <option value="price">Price</option>
+                        </select>
+                        <select id="sortOrder">
+                            <option value="asc">Low to High</option>
+                            <option value="desc">High to Low</option>
+                        </select>
+                    </div>
+                </div>
             </div>
             <div id="stockResults"></div>
         </div>

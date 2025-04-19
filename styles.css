@@ -117,6 +117,8 @@ header p {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
 }
 
 .results h2 {
@@ -124,9 +126,34 @@ header p {
     color: #2c3e50;
 }
 
+.results-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
 #resultsCount {
     color: #7f8c8d;
     font-size: 0.9em;
+}
+
+.sort-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sort-controls label {
+    font-size: 0.9em;
+    color: #34495e;
+}
+
+.sort-controls select {
+    padding: 5px 8px;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+    font-size: 14px;
 }
 
 .stock-card {
