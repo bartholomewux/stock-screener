@@ -202,3 +202,88 @@ header p {
     font-weight: bold;
     color: #2c3e50;
 }
+
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    header {
+        padding: 20px;
+    }
+
+    header h1 {
+        font-size: 2em;
+    }
+
+    .filters {
+        padding: 20px;
+    }
+
+    .button-group {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .button-group button {
+        width: 100%;
+    }
+
+    .results {
+        padding: 20px;
+    }
+
+    .results-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .results-controls {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .sort-controls {
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+
+    .sort-controls select {
+        min-width: 100px;
+    }
+
+    .stock-metrics {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 8px;
+    }
+
+    .metric {
+        padding: 6px 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.8em;
+    }
+
+    .filters,
+    .results {
+        padding: 15px;
+    }
+
+    .sort-controls {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+    }
+
+    .sort-controls select {
+        width: 100%;
+    }
+
+    .stock-metrics {
+        grid-template-columns: 1fr 1fr;
+    }
+}
