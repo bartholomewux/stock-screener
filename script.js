@@ -119,6 +119,56 @@ function clearFilters() {
     updateResultsCount(stockData.length, stockData.length);
 }
 
+function exportToCSV() {
+    const marketCapFilter = parseInt(document.getElementById('marketCap').value) || 0;
+    const peRatioFilter = parseFloat(document.getElementById('peRatio').value) || Infinity;
+    const dividendYieldFilter = parseFloat(document.getElementById('dividendYield').value) || 0;
+    const sectorFilter = document.getElementById('sector').value;
+
+    const filteredStocks = stockData.filter(stock => {
+        const meetsMarketCap = stock.marketCap >= marketCapFilter;
+        const meetsPeRatio = stock.peRatio <= peRatioFilter;
+        const meetsDividend = stock.dividendYield >= dividendYieldFilter;
+        const meetsSector = !sectorFilter || stock.sector === sectorFilter;
+
+        return meetsMarketCap && meetsPeRatio && meetsDividend && meetsSector;
+    });
+
+    const sortedStocks = sortStocks(filteredStocks);
+
+    if (sortedStocks.length === 0) {
+        alert('No stocks to export. Please adjust your filters.');
+        return;
+    }
+
+    const csvHeader = 'Symbol,Name,Price,Market Cap,P/E Ratio,Dividend Yield,Sector\n';
+    const csvRows = sortedStocks.map(stock => {
+        return [
+            stock.symbol,
+            `"${stock.name}"`,
+            stock.price.toFixed(2),
+            stock.marketCap,
+            stock.peRatio,
+            stock.dividendYield,
+            `"${stock.sector}"`
+        ].join(',');
+    }).join('\n');
+
+    const csvContent = csvHeader + csvRows;
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+
+    if (link.download !== undefined) {
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', 'stock_screening_results.csv');
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+}
+
 function sortStocks(stocks) {
     const sortBy = document.getElementById('sortBy').value;
     const sortOrder = document.getElementById('sortOrder').value;
@@ -185,6 +235,7 @@ function displayResults(stocks) {
 
 document.getElementById('screenButton').addEventListener('click', screenStocks);
 document.getElementById('clearButton').addEventListener('click', clearFilters);
+document.getElementById('exportButton').addEventListener('click', exportToCSV);
 document.getElementById('sortBy').addEventListener('change', () => {
     if (document.getElementById('stockResults').children.length > 0) {
         screenStocks();
