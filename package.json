@@ -1,0 +1,13 @@
+{
+  "name": "stock-screener",
+  "version": "1.0.0",
+  "description": "A web-based stock screening tool",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["stocks", "finance", "screener", "investment"],
+  "author": "bartholomewux",
+  "license": "MIT"
+}
